@@ -4431,10 +4431,6 @@ function renderStarlight(){
     var rec=st.history[today];
     hint.className='sl-hint lock';
     hint.textContent='今日已记录：'+(rec?rec.label:'')+' '+(rec&&rec.value>0?'+':'')+rec.value+'养分 · 已锁定';
-  }else if(!night){
-    btns.forEach(function(b){b.disabled=true;});
-    hint.className='sl-hint day';
-    hint.textContent='夜间时段（18:00-08:00）开放操作';
   }else{
     btns.forEach(function(b){b.disabled=false;});
     hint.className='sl-hint';
@@ -4453,7 +4449,6 @@ function submitNutrient(val){
   if(!st)st=state.starlightTree={nutrient:0,totalTrees:0,lastSubmitDate:null,history:{}};
   var today=todayKey();
   if(st.lastSubmitDate===today){showToast('今日已记录，无法修改');return;}
-  if(!isNightTime()){showToast('仅夜间时段可操作');return;}
   var labels={1:'自律',0:'普通','-1':'荒废'};
   st.nutrient+=val;
   if(st.nutrient<0)st.nutrient=0;
