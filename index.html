@@ -2084,6 +2084,86 @@ body{
 .sl-motiv-text{font-size:12px;line-height:1.7;color:#E8EDF3;font-family:'Georgia','Noto Serif SC',serif;letter-spacing:0.5px;padding:8px 4px}
 .sl-motiv-author{font-size:9px;color:#C9A961;letter-spacing:1px;opacity:0.7}
 
+/* === Notes Page === */
+.notes-hero{
+  position:relative;border-radius:20px;padding:18px 20px 16px;margin-bottom:12px;
+  background:linear-gradient(135deg,#1A1E2E 0%,#242B3D 50%,#1E2436 100%);
+  border:1px solid rgba(201,169,97,0.15);overflow:hidden;
+  box-shadow:0 8px 28px rgba(0,0,0,0.35);
+}
+.notes-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,169,97,0.08),transparent 60%)}
+.notes-hero-content{position:relative;z-index:1}
+.notes-hero-title{font-size:18px;font-weight:700;color:#E8EDF3;letter-spacing:1px}
+.notes-hero-sub{font-size:11px;color:rgba(201,169,97,0.6);margin-top:3px;letter-spacing:0.5px}
+.notes-hero-deco{position:absolute;top:14px;right:20px;font-size:22px;color:rgba(201,169,97,0.12);z-index:0}
+.notes-input-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+  border-radius:18px;padding:12px 14px 10px;margin-bottom:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+.notes-textarea{
+  width:100%;background:transparent;border:none;resize:vertical;
+  font-size:13px;line-height:1.6;color:#E8EDF3;
+  min-height:56px;padding:2px 0 8px;
+}
+.notes-textarea::placeholder{color:#5C6470}
+.notes-textarea:focus{outline:none}
+.notes-input-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid rgba(255,255,255,0.05);padding-top:8px}
+.notes-tags{display:flex;gap:5px;flex-wrap:wrap}
+.note-tag{
+  font-size:10px;padding:3px 10px;border-radius:10px;
+  background:rgba(255,255,255,0.05);color:#7D8A9E;
+  cursor:pointer;transition:all 0.2s;user-select:none;
+  border:1px solid transparent;
+}
+.note-tag:hover{background:rgba(255,255,255,0.08);color:#E8EDF3}
+.note-tag.active{background:rgba(201,169,97,0.12);color:#C9A961;border-color:rgba(201,169,97,0.2)}
+.notes-save-btn{padding:5px 18px !important;font-size:12px;border-radius:10px}
+.notes-list{display:flex;flex-direction:column;gap:8px}
+.note-card{
+  background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;padding:10px 12px 8px;position:relative;
+  transition:all 0.2s;overflow:hidden;
+}
+.note-card:hover{border-color:rgba(201,169,97,0.15);background:rgba(255,255,255,0.05)}
+.note-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#C9A961,#D8C486);opacity:0;transition:opacity 0.2s;
+}
+.note-card:hover::before{opacity:0.6}
+.note-card.editing::before{opacity:1}
+.note-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.note-cat{
+  font-size:9px;padding:1px 7px;border-radius:8px;
+  background:rgba(201,169,97,0.1);color:#C9A961;
+  border:1px solid rgba(201,169,97,0.12);letter-spacing:0.3px;
+}
+.note-time{font-size:9px;color:#5C6470;flex:1}
+.note-actions{display:flex;gap:4px;opacity:0;transition:opacity 0.2s}
+.note-card:hover .note-actions{opacity:1}
+.note-act{
+  font-size:10px;padding:2px 7px;border-radius:7px;cursor:pointer;
+  background:rgba(255,255,255,0.06);color:#7D8A9E;transition:all 0.15s;
+}
+.note-act:hover{background:rgba(255,255,255,0.12);color:#E8EDF3}
+.note-act.del:hover{background:rgba(255,100,100,0.12);color:#FF6B6B}
+.note-body{font-size:12.5px;line-height:1.55;color:#D0D5DD;word-break:break-word;white-space:pre-wrap}
+.note-edit-area{
+  width:100%;background:rgba(0,0,0,0.2);border:1px solid rgba(201,169,97,0.2);
+  border-radius:8px;padding:6px 8px;font-size:12.5px;line-height:1.55;
+  color:#E8EDF3;resize:vertical;min-height:50px;font-family:inherit;
+}
+.note-edit-area:focus{outline:none;border-color:rgba(201,169,97,0.4)}
+.note-edit-bar{display:flex;gap:6px;margin-top:6px;justify-content:flex-end}
+.note-edit-btn{font-size:10px;padding:3px 12px;border-radius:8px;cursor:pointer;border:none}
+.note-edit-btn.save{background:rgba(201,169,97,0.15);color:#C9A961}
+.note-edit-btn.cancel{background:rgba(255,255,255,0.06);color:#7D8A9E}
+.notes-empty{
+  text-align:center;padding:30px 20px;color:#5C6470;font-size:12px;
+  border:1px dashed rgba(255,255,255,0.06);border-radius:14px;
+}
+.notes-empty .empty-icon{font-size:28px;opacity:0.3;margin-bottom:6px}
+
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -2126,6 +2206,7 @@ body{
       <div class="nav-item" data-page="starlight"><div class="nav-icon">🌱</div><div class="nav-label">星光树</div></div>
       <div class="nav-item" data-page="weather"><div class="nav-icon">⛅</div><div class="nav-label">天气</div></div>
       <div class="nav-item" data-page="hot"><div class="nav-icon">📰</div><div class="nav-label">新闻</div></div>
+      <div class="nav-item" data-page="notes"><div class="nav-icon">📝</div><div class="nav-label">记录</div></div>
     </nav>
     <div class="sidebar-footer">v1.0.0</div>
   </aside>
@@ -2503,6 +2584,31 @@ body{
         <div id="newsHistory" class="hist-list"></div>
         <div id="newsHistoryPager" class="pager"></div>
       </div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="page" data-page="notes">
+      <div class="notes-hero">
+        <div class="notes-hero-bg"></div>
+        <div class="notes-hero-content">
+          <div class="notes-hero-title">✦ 我的记录</div>
+          <div class="notes-hero-sub" id="notesCount">0 条想法</div>
+        </div>
+        <div class="notes-hero-deco">✦</div>
+      </div>
+      <div class="notes-input-card">
+        <textarea class="notes-textarea" id="noteInput" placeholder="写下此刻的想法…" rows="3"></textarea>
+        <div class="notes-input-bar">
+          <div class="notes-tags" id="noteTags">
+            <span class="note-tag active" data-tag="想法">想法</span>
+            <span class="note-tag" data-tag="灵感">灵感</span>
+            <span class="note-tag" data-tag="待办">待办</span>
+            <span class="note-tag" data-tag="随笔">随笔</span>
+          </div>
+          <button class="btn-pill btn-primary notes-save-btn" onclick="addNote()">保存</button>
+        </div>
+      </div>
+      <div class="notes-list" id="notesList"></div>
     </section>
 
   </main>
@@ -3232,7 +3338,9 @@ const defaultState={
     totalTrees:0,
     lastSubmitDate:null,
     history:{}
-  }
+  },
+  notes:[],
+  notesCurrentTag:'想法'
 };
 
 let state=loadState();
@@ -3247,6 +3355,9 @@ function loadState(){
       if(!merged.starlightTree)merged.starlightTree={nutrient:0,totalTrees:0,lastSubmitDate:null,history:{}};
       // Ensure starlightTree.history exists
       if(!merged.starlightTree.history)merged.starlightTree.history={};
+      // Ensure notes exists
+      if(!merged.notes)merged.notes=[];
+      if(!merged.notesCurrentTag)merged.notesCurrentTag='想法';
       return merged;
     }
   }catch(e){
@@ -3388,6 +3499,7 @@ function renderCurrentPage(){
     case 'starlight':renderStarlight();break;
     case 'weather':renderWeather();break;
     case 'hot':renderNewsChips();renderNews();renderNewsHistory();break;
+    case 'notes':renderNotes();break;
   }
 }
 $('#navList').addEventListener('click',e=>{
@@ -4243,7 +4355,7 @@ window.addCheckin=addCheckin;
 /* ========== STARLIGHT TREE ========== */
 function isNightTime(){
   var h=new Date().getHours();
-  return h>=18||h<8;
+  return h>=20||h<5;
 }
 function getTreeStage(n){
   if(n>=30)return 3;
@@ -4431,6 +4543,10 @@ function renderStarlight(){
     var rec=st.history[today];
     hint.className='sl-hint lock';
     hint.textContent='今日已记录：'+(rec?rec.label:'')+' '+(rec&&rec.value>0?'+':'')+rec.value+'养分 · 已锁定';
+  }else if(!night){
+    btns.forEach(function(b){b.disabled=true;});
+    hint.className='sl-hint day';
+    hint.textContent='夜间时段（20:00-05:00）开放操作';
   }else{
     btns.forEach(function(b){b.disabled=false;});
     hint.className='sl-hint';
@@ -4449,6 +4565,7 @@ function submitNutrient(val){
   if(!st)st=state.starlightTree={nutrient:0,totalTrees:0,lastSubmitDate:null,history:{}};
   var today=todayKey();
   if(st.lastSubmitDate===today){showToast('今日已记录，无法修改');return;}
+  if(!isNightTime()){showToast('仅夜间时段（20:00-05:00）可操作');return;}
   var labels={1:'自律',0:'普通','-1':'荒废'};
   st.nutrient+=val;
   if(st.nutrient<0)st.nutrient=0;
@@ -4919,6 +5036,123 @@ function updateNewsData(){
   });
 }
 window.newsHistoryGoPage=newsHistoryGoPage;
+
+/* ========== NOTES ========== */
+function renderNotes(){
+  var list=state.notes||[];
+  var container=$('#notesList');
+  var countEl=$('#notesCount');
+  if(countEl)countEl.textContent=list.length+' 条想法';
+  if(list.length===0){
+    container.innerHTML='<div class="notes-empty"><div class="empty-icon">✦</div>还没有记录，写下第一个想法吧</div>';
+    return;
+  }
+  var html='';
+  for(var i=list.length-1;i>=0;i--){
+    var n=list[i];
+    var tagColors={
+      '想法':'rgba(201,169,97,0.1)',
+      '灵感':'rgba(100,200,255,0.1)',
+      '待办':'rgba(255,180,80,0.1)',
+      '随笔':'rgba(180,140,255,0.1)'
+    };
+    var tagColor=tagColors[n.tag]||'rgba(201,169,97,0.1)';
+    html+='<div class="note-card" data-id="'+n.id+'">'+
+      '<div class="note-head">'+
+        '<span class="note-cat" style="background:'+tagColor+';border-color:'+tagColor.replace('0.1','0.15')+'">'+escapeHtml(n.tag||'想法')+'</span>'+
+        '<span class="note-time">'+formatNoteTime(n.ts)+'</span>'+
+        '<div class="note-actions">'+
+          '<span class="note-act edit" onclick="editNote('+n.id+')">编辑</span>'+
+          '<span class="note-act del" onclick="deleteNote('+n.id+')">删除</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="note-body" id="noteBody-'+n.id+'">'+escapeHtml(n.text)+'</div>'+
+    '</div>';
+  }
+  container.innerHTML=html;
+}
+function formatNoteTime(ts){
+  var d=new Date(ts);
+  var now=new Date();
+  var pad2=function(n){return String(n).padStart(2,'0');};
+  var dateStr=d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+  var todayStr=now.getFullYear()+'-'+pad2(now.getMonth()+1)+'-'+pad2(now.getDate());
+  var timeStr=pad2(d.getHours())+':'+pad2(d.getMinutes());
+  if(dateStr===todayStr)return '今天 '+timeStr;
+  var yest=new Date(now);yest.setDate(yest.getDate()-1);
+  var yestStr=yest.getFullYear()+'-'+pad2(yest.getMonth()+1)+'-'+pad2(yest.getDate());
+  if(dateStr===yestStr)return '昨天 '+timeStr;
+  return dateStr+' '+timeStr;
+}
+function addNote(){
+  var input=$('#noteInput');
+  var text=input.value.trim();
+  if(!text){showToast('请先写点内容');return;}
+  if(!state.notes)state.notes=[];
+  state.notes.push({
+    id:Date.now(),
+    text:text,
+    tag:state.notesCurrentTag||'想法',
+    ts:Date.now()
+  });
+  input.value='';
+  saveState();
+  renderNotes();
+  showToast('已保存 ✓');
+}
+function editNote(id){
+  var bodyEl=$('#noteBody-'+id);
+  if(!bodyEl)return;
+  var card=bodyEl.closest('.note-card');
+  if(!card)return;
+  var note=state.notes.find(function(n){return n.id===id;});
+  if(!note)return;
+  card.classList.add('editing');
+  bodyEl.outerHTML='<textarea class="note-edit-area" id="noteEdit-'+id+'">'+escapeHtml(note.text)+'</textarea>'+
+    '<div class="note-edit-bar">'+
+      '<button class="note-edit-btn cancel" onclick="cancelEditNote('+id+')">取消</button>'+
+      '<button class="note-edit-btn save" onclick="saveEditNote('+id+')">保存</button>'+
+    '</div>';
+  var ta=$('#noteEdit-'+id);
+  if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}
+}
+function cancelEditNote(id){
+  renderNotes();
+}
+function saveEditNote(id){
+  var ta=$('#noteEdit-'+id);
+  if(!ta)return;
+  var text=ta.value.trim();
+  if(!text){showToast('内容不能为空');return;}
+  var note=state.notes.find(function(n){return n.id===id;});
+  if(!note)return;
+  note.text=text;
+  note.ts=Date.now();
+  saveState();
+  renderNotes();
+  showToast('已更新 ✓');
+}
+function deleteNote(id){
+  if(!confirm('确定删除这条记录？'))return;
+  state.notes=state.notes.filter(function(n){return n.id!==id;});
+  saveState();
+  renderNotes();
+  showToast('已删除');
+}
+$('#noteTags')&&$('#noteTags').addEventListener('click',function(e){
+  var tag=e.target.closest('.note-tag');
+  if(!tag)return;
+  $('#noteTags').querySelectorAll('.note-tag').forEach(function(t){t.classList.remove('active');});
+  tag.classList.add('active');
+  state.notesCurrentTag=tag.dataset.tag;
+  saveState();
+});
+window.addNote=addNote;
+window.editNote=editNote;
+window.cancelEditNote=cancelEditNote;
+window.saveEditNote=saveEditNote;
+window.deleteNote=deleteNote;
+
 function showModal(html){
   const m=document.createElement('div');
   m.className='detail-modal';
