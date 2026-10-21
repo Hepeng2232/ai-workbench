@@ -2164,6 +2164,147 @@ body{
 }
 .notes-empty .empty-icon{font-size:28px;opacity:0.3;margin-bottom:6px}
 
+/* ===== TIMETABLE ===== */
+.tt-hero{
+  background:linear-gradient(135deg,#1E1B2E 0%,#25203A 55%,#1B2233 100%);
+  color:#fff;border:1px solid rgba(201,169,97,0.18);
+  border-radius:18px;padding:16px;margin-bottom:12px;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+.tt-hero::after{
+  content:"🗓️";position:absolute;right:4px;bottom:-18px;
+  font-size:84px;opacity:0.1;pointer-events:none;
+}
+.tt-tag{
+  display:inline-block;padding:2px 8px;border-radius:6px;
+  background:rgba(201,169,97,0.15);color:#C9A961;
+  font-size:10px;font-weight:600;letter-spacing:0.5px;
+}
+.tt-title{font-size:17px;font-weight:700;margin:8px 0 10px;color:#F3E9CF;line-height:1.45}
+.tt-today-item{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 0;border-top:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;border-radius:8px;transition:background .15s;
+}
+.tt-today-item:hover{background:rgba(255,255,255,0.04)}
+.tt-today-item:first-of-type{border-top:none}
+.tt-today-dot{width:4px;height:26px;border-radius:3px;flex:0 0 auto}
+.tt-today-main{flex:1;min-width:0}
+.tt-today-name{font-size:13px;font-weight:600;color:#E8EDF3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-today-meta{font-size:10px;color:#8A94A6;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-today-time{font-size:10px;color:#C9A961;flex:0 0 auto;font-weight:600}
+.tt-empty-today{font-size:12px;color:#7D8A9E;padding:4px 0 2px}
+
+/* Timetable grid */
+.tt-scroll{overflow-x:auto;margin:0;padding:0 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.14) transparent}
+.tt-scroll::-webkit-scrollbar{height:4px}
+.tt-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:2px}
+.tt-scroll::-webkit-scrollbar-track{background:transparent}
+.tt-grid{
+  display:grid;grid-template-columns:56px repeat(7,104px);
+  border:1px solid rgba(255,255,255,0.06);border-radius:12px;
+  background:rgba(255,255,255,0.02);min-width:max-content;
+}
+.tt-grid>.tt-corner{border-top-left-radius:12px}
+.tt-grid>:nth-child(8){border-top-right-radius:12px}
+.tt-corner,.tt-head{
+  background:#241F33;border-bottom:1px solid rgba(255,255,255,0.07);
+  padding:8px 3px;font-size:11px;font-weight:700;color:#8A94A6;text-align:center;
+}
+.tt-corner{position:sticky;left:0;z-index:3}
+.tt-head.today{color:#C9A961;background:#2A2438}
+.tt-period{
+  background:#241F33;border-bottom:1px solid rgba(255,255,255,0.06);
+  border-right:1px solid rgba(255,255,255,0.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:6px 2px;position:sticky;left:0;z-index:2;
+}
+.tt-period b{font-size:9.5px;color:#C3CBD8;font-weight:600;line-height:1.35;text-align:center;word-break:keep-all}
+.tt-period span{font-size:8px;color:#6E7A8D;margin-top:2px;letter-spacing:0.2px}
+.tt-cell{
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  border-right:1px solid rgba(255,255,255,0.05);
+  min-height:82px;padding:4px;position:relative;
+  display:flex;flex-direction:column;gap:4px;cursor:pointer;
+}
+.tt-cell.today{background:rgba(201,169,97,0.035)}
+.tt-cell:hover .tt-empty{color:rgba(201,169,97,0.42);background:rgba(201,169,97,0.04)}
+.tt-empty{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.1);font-size:14px;font-weight:300;
+  transition:color 0.2s,background 0.2s;border-radius:7px;
+}
+.tt-block{
+  border-radius:7px;padding:5px 6px;color:#fff;flex:1;min-height:74px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.35),inset 0 0 0 1px rgba(255,255,255,0.08);
+  cursor:pointer;transition:transform 0.15s,filter 0.15s;overflow:hidden;
+}
+.tt-block:hover{transform:translateY(-1px);filter:brightness(1.07)}
+.tt-block.editing{box-shadow:0 0 0 2px #C9A961,0 2px 8px rgba(0,0,0,0.45)}
+.tt-b-name{font-size:11px;font-weight:700;line-height:1.3;word-break:break-word}
+.tt-b-meta{font-size:9px;opacity:0.82;line-height:1.45;margin-top:2px;word-break:break-word}
+.tt-hint{font-size:10px;color:#5C6470;margin-top:8px;line-height:1.6}
+
+/* Period editor */
+.tt-pe-row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.tt-pe-row .tt-input{flex:2;padding:7px 9px;font-size:11px}
+.tt-pe-row .tt-input.tt-time{flex:1.1}
+.tt-pe-del{
+  flex:0 0 auto;width:22px;height:22px;border-radius:6px;line-height:20px;text-align:center;
+  font-size:14px;color:#6E7A8D;background:rgba(255,255,255,0.05);cursor:pointer;
+}
+.tt-pe-del:hover{background:rgba(239,68,68,0.18);color:#EF4444}
+.tt-add-period{
+  flex:1;background:rgba(255,255,255,0.04);color:#C3CBD8;
+  border:1px dashed rgba(255,255,255,0.15);border-radius:10px;padding:9px;
+  font-size:11px;cursor:pointer;transition:background 0.2s;
+}
+.tt-add-period:hover{background:rgba(255,255,255,0.08)}
+
+.tt-form{display:flex;flex-direction:column;gap:8px}
+.tt-row{display:flex;gap:8px}
+.tt-row>*{flex:1;min-width:0}
+.tt-row #ttPeriod{flex:1.5}
+.tt-select{text-overflow:ellipsis}
+.tt-input,.tt-select{
+  width:100%;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:9px;
+  padding:9px 11px;font-size:12px;color:#E8EDF3;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.tt-input::placeholder{color:#5C6470}
+.tt-input:focus,.tt-select:focus{border-color:rgba(201,169,97,0.45);box-shadow:0 0 0 3px rgba(201,169,97,0.08)}
+.tt-select option{background:#25203A;color:#E8EDF3}
+.tt-colors{display:flex;gap:8px;flex-wrap:wrap;padding:2px 0}
+.tt-color{
+  width:26px;height:26px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:transform 0.18s,border-color 0.18s;
+  position:relative;
+}
+.tt-color:hover{transform:scale(1.12)}
+.tt-color.active{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,0.4),0 0 8px rgba(201,169,97,0.4)}
+.tt-color.active::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.6)}
+.tt-actions{display:flex;gap:8px;margin-top:2px}
+.tt-submit{
+  flex:1;background:linear-gradient(135deg,#C9A961,#E8D5A3);color:#1E1B2E;
+  border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;
+  border:none;transition:filter 0.2s,transform 0.2s;
+}
+.tt-submit:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.tt-submit:active{transform:translateY(0)}
+.tt-cancel{
+  flex:0 0 72px;background:rgba(255,255,255,0.06);color:#8A94A6;
+  border-radius:10px;padding:10px;font-size:12px;font-weight:600;cursor:pointer;border:none;
+}
+.tt-cancel:hover{background:rgba(255,255,255,0.1);color:#C3CBD8}
+.tt-del{
+  flex:0 0 60px;background:rgba(239,68,68,0.12);color:#FF7B7B;
+  border-radius:10px;padding:10px;font-size:12px;font-weight:600;cursor:pointer;border:none;
+}
+.tt-del:hover{background:rgba(239,68,68,0.2)}
+.tt-tip{font-size:10px;color:#5C6470;line-height:1.6}
+
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -2200,7 +2341,7 @@ body{
       <div class="nav-item active" data-page="home"><div class="nav-icon">🏠</div><div class="nav-label">工作台</div></div>
       <div class="nav-item" data-page="science"><div class="nav-icon">🌌</div><div class="nav-label">科普</div></div>
       <div class="nav-item" data-page="exercise"><div class="nav-icon">🏃</div><div class="nav-label">运动</div></div>
-      <div class="nav-item" data-page="books"><div class="nav-icon">📚</div><div class="nav-label">读书</div></div>
+      <div class="nav-item" data-page="books"><div class="nav-icon">🗓️</div><div class="nav-label">课表</div></div>
       <div class="nav-item" data-page="words"><div class="nav-icon">🔤</div><div class="nav-label">英语</div></div>
       <div class="nav-item" data-page="expression"><div class="nav-icon">💭</div><div class="nav-label">心得</div></div>
       <div class="nav-item" data-page="starlight"><div class="nav-icon">🌱</div><div class="nav-label">星光树</div></div>
@@ -2253,9 +2394,9 @@ body{
           <div class="qi-sub">探索星空</div>
         </div>
         <div class="quick-item-3" onclick="goPage('books')">
-          <div class="qi-icon" style="background:rgba(139,92,246,0.12);color:#8B7FD4">📚</div>
-          <div class="qi-label">读书</div>
-          <div class="qi-sub">好书推荐</div>
+          <div class="qi-icon" style="background:rgba(74,144,217,0.12);color:#4A90D9">🗓️</div>
+          <div class="qi-label">课表</div>
+          <div class="qi-sub">一周课程</div>
         </div>
         <div class="quick-item-3" onclick="goPage('words')">
           <div class="qi-icon" style="background:rgba(245,158,11,0.12);color:#F59E0B">🔤</div>
@@ -2352,29 +2493,65 @@ body{
       </div>
     </section>
 
-    <!-- BOOKS -->
+    <!-- TIMETABLE -->
     <section class="page" data-page="books">
-      <div class="book-featured" id="bookFeatured">
-        <span class="ftag">今日推荐</span>
-        <div class="ftitle" id="bfTitle">--</div>
-        <div class="fauthor" id="bfAuthor">--</div>
-        <div class="fdesc" id="bfDesc">--</div>
-        <div class="row" style="margin-top:10px;gap:6px">
-          <button class="btn-pill btn-ghost" style="flex:1;color:#fff;background:rgba(255,255,255,0.2)" onclick="bookCheckin()">📖 打卡</button>
-          <button class="btn-pill" style="flex:1;color:#1E3A5F;background:#fff" onclick="refreshBooks()">换一本</button>
-        </div>
+      <div class="tt-hero">
+        <span class="tt-tag" id="ttTodayTag">今日课程</span>
+        <div class="tt-title" id="ttTitle">今天没有课，好好休息</div>
+        <div id="ttTodayList"></div>
       </div>
       <div class="card">
         <div class="card-title">
-          <span class="label">更多好书</span>
-          <span class="card-action" onclick="refreshBooks()">换一批</span>
+          <span class="label">本周课表 · 周一至周日</span>
+          <span class="card-action" onclick="resetTimetable()">恢复默认</span>
         </div>
-        <div class="book-list" id="bookList"></div>
+        <div class="tt-scroll">
+          <div class="tt-grid" id="ttGrid"></div>
+        </div>
+        <div class="tt-hint">点击空白格添加课程，点击课程可修改；左右滑动查看一周。</div>
       </div>
       <div class="card">
-        <div class="card-title"><span class="label">阅读历史记录</span></div>
-        <div id="bookHistory" class="hist-list"></div>
-        <div id="bookPager" class="pager"></div>
+        <div class="card-title">
+          <span class="label">节次设置</span>
+          <span class="card-action" id="ttPeriodToggle" onclick="togglePeriodEditor()">展开编辑</span>
+        </div>
+        <div id="ttPeriodEditor" style="display:none">
+          <div id="ttPeriodRows"></div>
+          <div class="tt-row" style="margin-top:8px">
+            <button class="tt-add-period" onclick="addPeriodRow()">+ 添加节次</button>
+            <button class="tt-submit" style="flex:0 0 96px" onclick="savePeriods()">保存节次</button>
+          </div>
+          <div class="tt-tip">节次决定课表左侧的行，可自定义名称与上课时间；删除节次时该行的课程会一并删除。</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="label" id="ttFormTitle">添加课程</span></div>
+        <div class="tt-form">
+          <input class="tt-input" id="ttName" placeholder="课程名称（必填，20 字内）" maxlength="20">
+          <div class="tt-row">
+            <input class="tt-input" id="ttTeacher" placeholder="教师" maxlength="12">
+            <input class="tt-input" id="ttRoom" placeholder="教室" maxlength="16">
+          </div>
+          <div class="tt-row">
+            <select class="tt-select" id="ttDay">
+              <option value="1">星期一</option>
+              <option value="2">星期二</option>
+              <option value="3">星期三</option>
+              <option value="4">星期四</option>
+              <option value="5">星期五</option>
+              <option value="6">星期六</option>
+              <option value="7">星期日</option>
+            </select>
+            <select class="tt-select" id="ttPeriod"></select>
+          </div>
+          <div class="tt-colors" id="ttColors"></div>
+          <div class="tt-actions">
+            <button class="tt-submit" id="ttSubmit" onclick="submitCourse()">添加课程</button>
+            <button class="tt-cancel" id="ttCancel" onclick="cancelEditCourse()" style="display:none">取消</button>
+            <button class="tt-del" id="ttDelete" onclick="deleteEditingCourse()" style="display:none">删除</button>
+          </div>
+          <div class="tt-tip">课程会出现在所选星期与节次交叉的格子里，颜色用于区分课程。</div>
+        </div>
       </div>
     </section>
 
@@ -3052,33 +3229,25 @@ const DB={
     {w:"snake",p:"",pos:"",def:"蛇",level:"4"},{w:"subsistence",p:"",pos:"n.",def:"生存",level:"6"},{w:"tender",p:"",pos:"n.",def:"柔软、投标",level:"4"},{w:"thread",p:"",pos:"",def:"线",level:"4"},{w:"transplant",p:"",pos:"n.",def:"移植",level:"4"},{w:"unify",p:"",pos:"v.",def:"使成为一体",level:"6"},{w:"upright",p:"",pos:"adj.",def:"正直的、垂直",level:"4"},{w:"vapor",p:"",pos:"n.",def:"蒸汽",level:"4"},
     {w:"vulgar",p:"",pos:"adj.",def:"粗俗的",level:"6"},{w:"acid",p:"",pos:"",def:"酸",level:"4"},{w:"antibiotic",p:"",pos:"adj.",def:"抗生素",level:"6"},{w:"ashamed",p:"",pos:"adj.",def:"羞耻的",level:"4"},{w:"aunt",p:"",pos:"",def:"姑、姨",level:"4"},{w:"await",p:"",pos:"",def:"等候",level:"4"},{w:"bald",p:"",pos:"adj.",def:"秃头的、单调的",level:"6"},{w:"bankrupt",p:"",pos:"adj.",def:"破产的",level:"4"}
   ],
-  books:[
-    {id:1,title:'原子习惯',author:'詹姆斯·克利尔',rating:4.8,pages:256,color:'#C9A961',desc:'微小改变，伟大成就。一本关于如何养成好习惯、戒除坏习惯的实操指南，提出"四步法"和"四大定律"，被无数读者誉为改变人生的一本书。'},
-    {id:2,title:'思考，快与慢',author:'丹尼尔·卡尼曼',rating:4.7,pages:512,color:'#6366F1',desc:'诺贝尔奖得主揭示人类思维的两种模式：快速直觉的"系统1"和缓慢理性的"系统2"，帮助你理解自己何时会犯错、该如何决策。'},
-    {id:3,title:'人类简史',author:'尤瓦尔·赫拉利',rating:4.8,pages:440,color:'#10B981',desc:'从认知革命到人工智能，重新审视人类这个物种的过去与未来。宏大叙事中藏着你从未想过的细节，回答"我们是谁、从哪来、到哪去"。'},
-    {id:4,title:'活着',author:'余华',rating:4.9,pages:200,color:'#EF4444',desc:'一个普通中国人在动荡时代里的命运。朴素的语言写出生命的厚重。读完后你会重新理解"活着"二字——人是为了活着本身而活着。'},
-    {id:5,title:'被讨厌的勇气',author:'岸见一郎 / 古贺史健',rating:4.7,pages:320,color:'#F59E0B',desc:'阿德勒心理学的入门读物，以对话体呈现。核心观点：所有的烦恼都来自人际关系，而自由就是被别人讨厌。'},
-    {id:6,title:'刻意练习',author:'安德斯·艾利克森',rating:4.6,pages:340,color:'#06B6D4',desc:'颠覆"天才"神话：任何人都可以通过正确的方法成为任何领域的专家。关键在于有目的、有反馈、有挑战的练习。'},
-    {id:7,title:'原则',author:'瑞·达利欧',rating:4.5,pages:592,color:'#8B5CF6',desc:'桥水基金创始人的人生和工作原则。极度透明、极度求真，是其成功的底层方法论。一本可以反复重读的"操作手册"。'},
-    {id:8,title:'非暴力沟通',author:'马歇尔·卢森堡',rating:4.7,pages:240,color:'#EC4899',desc:'学会用不带伤害的方式表达自己、倾听他人。观察、感受、需要、请求——四个步骤解决大部分沟通难题。'},
-    {id:9,title:'深度工作',author:'卡尔·纽波特',rating:4.5,pages:296,color:'#0EA5E9',desc:'在分心的时代，深度工作能力是最有价值的技能。书中给出具体可操作的策略，帮你重建专注力，从短视频奴役中解放。'},
-    {id:10,title:'三体',author:'刘慈欣',rating:4.9,pages:380,color:'#1E40AF',desc:'中国科幻的里程碑之作。从文化大革命到三体文明，从地球到宇宙深处，宏大的设定与硬核的物理让人欲罢不能。'},
-    {id:11,title:'高效能人士的七个习惯',author:'史蒂芬·柯维',rating:4.6,pages:360,color:'#7C3AED',desc:'经典中的经典。七个习惯覆盖个人成长、团队协作、领导力提升，被誉为"圣经级"职场成长指南，影响了几代人。'},
-    {id:12,title:'把时间当作朋友',author:'李笑来',rating:4.4,pages:268,color:'#14B8A6',desc:'时间不可管理，能管理的只有自己。书中关于心智、习惯、效率的思考发人深省，是个人成长领域的经典入门读物。'},
-    {id:13,title:'自控力',author:'凯利·麦格尼格尔',rating:4.5,pages:320,color:'#84CC16',desc:'斯坦福最受欢迎的心理学课程。科学解读意志力的运作机制，并提供提升自控力的具体训练方法，帮你摆脱拖延与诱惑。'},
-    {id:14,title:'学会提问',author:'尼尔·布朗',rating:4.6,pages:268,color:'#F97316',desc:'批判性思维入门。学会提出关键问题，才能避免被信息误导，活得更加清醒。在后真相时代尤其重要。'},
-    {id:15,title:'心流',author:'米哈里·契克森米哈赖',rating:4.7,pages:352,color:'#D946EF',desc:'积极心理学奠基之作。揭示最优体验的本质：当挑战与能力匹配时，人会进入完全沉浸的"心流"状态。'},
-    {id:16,title:'如何阅读一本书',author:'莫提默·艾德勒',rating:4.6,pages:320,color:'#0891B2',desc:'阅读的"圣经"。从基础阅读到主题阅读，四层次进阶，让你成为一个真正"会读书"的人，让读书事半功倍。'},
-    {id:17,title:'认知觉醒',author:'周岭',rating:4.7,pages:280,color:'#059669',desc:'揭开大脑运作的底层逻辑，从本能脑、情绪脑到理智脑，帮你理解为什么懂了很多道理却过不好这一生，并提供切实可行的改变路径。'},
-    {id:18,title:'纳瓦尔宝典',author:'埃里克·乔根森',rating:4.8,pages:240,color:'#DC2626',desc:'硅谷投资人纳瓦尔·拉维坎特的智慧合集。关于财富、幸福、人生选择的深刻洞察，短小精悍却字字珠玑。'},
-    {id:19,title:'穷查理宝典',author:'查理·芒格',rating:4.9,pages:540,color:'#1D4ED8',desc:'巴菲特黄金搭档的人生智慧。多元思维模型、逆向思考、人类误判心理学，跨越投资与人生的普世智慧。'},
-    {id:20,title:'围城',author:'钱钟书',rating:4.8,pages:360,color:'#B91C1C',desc:'中国现代文学经典。方鸿渐的爱情与婚姻，围在城里的人想出去，城外的人想冲进来。幽默讽刺中藏着人生真相。'},
-    {id:21,title:'百年孤独',author:'加西亚·马尔克斯',rating:4.9,pages:360,color:'#D97706',desc:'魔幻现实主义巅峰之作。布恩迪亚家族七代人的传奇故事，孤独如咒语般代代相传。诺贝尔文学奖得主代表作。'},
-    {id:22,title:'明朝那些事儿',author:'当年明月',rating:4.9,pages:600,color:'#7C2D12',desc:'用幽默风趣的笔法讲述明朝276年历史。从朱元璋开国到崇祯亡国，历史从未如此好看。读完会爱上历史。'},
-    {id:23,title:'解忧杂货店',author:'东野圭吾',rating:4.7,pages:296,color:'#0D9488',desc:'一家能解答烦恼的杂货店，连接过去与现在的温情故事。东野圭吾最治愈的作品，关于选择、勇气和善意。'},
-    {id:24,title:'自卑与超越',author:'阿尔弗雷德·阿德勒',rating:4.6,pages:280,color:'#4338CA',desc:'个体心理学创始人阿德勒的代表作。自卑感是人类进步的动力，理解自卑才能超越自我，找到生命的意义。'},
-    {id:25,title:'叔本华的治疗',author:'欧文·亚隆',rating:4.7,pages:400,color:'#6B21A8',desc:'存在主义心理治疗大师亚隆的小说。团体治疗中，哲学家叔本华的思想与现代心理学碰撞，探讨孤独、死亡与意义。'},
-    {id:26,title:'置身事内',author:'兰小欢',rating:4.8,pages:320,color:'#0E7490',desc:'复旦大学教授深入浅出解读中国政府与经济发展。从土地财政到产业政策，理解中国经济的底层逻辑。'}
+  timetablePeriods:[
+    {label:'第1、2节',time:'08:00-09:40'},
+    {label:'第3、4(5)节',time:'10:00-11:40'},
+    {label:'第6、7节',time:'14:00-15:40'},
+    {label:'第8、9(10)节',time:'16:00-17:40'},
+    {label:'第10、11节',time:'19:00-20:40'}
+  ],
+  timetableDefaults:[
+    {day:1,period:0,name:'高等数学',teacher:'王建国',room:'A101',color:'#4A90D9'},
+    {day:1,period:2,name:'大学英语',teacher:'李梅',room:'B203',color:'#10B981'},
+    {day:2,period:0,name:'数据结构',teacher:'张伟',room:'实验楼302',color:'#8B5CF6'},
+    {day:2,period:2,name:'体育',teacher:'刘强',room:'田径场',color:'#F59E0B'},
+    {day:3,period:0,name:'线性代数',teacher:'陈芳',room:'A205',color:'#06B6D4'},
+    {day:3,period:1,name:'大学物理',teacher:'赵磊',room:'C110',color:'#EC4899'},
+    {day:4,period:0,name:'计算机网络',teacher:'周涛',room:'实验楼401',color:'#EF4444'},
+    {day:4,period:3,name:'马克思主义原理',teacher:'孙丽',room:'B102',color:'#C9A961'},
+    {day:5,period:0,name:'操作系统',teacher:'吴敏',room:'实验楼305',color:'#14B8A6'},
+    {day:6,period:1,name:'专业选修课',teacher:'郑华',room:'A310',color:'#8B7FD4'},
+    {day:7,period:2,name:'自习 / 复习',teacher:'',room:'图书馆',color:'#94A3B8'}
   ],
   newsCategories:[
     {id:'it',name:'IT互联网'},
@@ -3267,6 +3436,15 @@ const DB={
   ]
 };
 
+/* Timetable seed: defaults get stable unique ids */
+function seedTimetableCourses(){
+  return DB.timetableDefaults.map(function(c,i){
+    var o=JSON.parse(JSON.stringify(c));
+    o.id=i+1;
+    return o;
+  });
+}
+
 /* ========== State ========== */
 const STORAGE_KEY='workbench_state_v1';
 const STATE_VERSION=2;
@@ -3311,13 +3489,10 @@ const defaultState={
     scienceHistory:[],
     sciencePage:1
   },
-  bookState:{
-    currentIdx:0,
-    progress:{},
-    lastDay:'',
-    bookCheckinLog:{},
-    bookHistory:[],
-    bookPage:1
+  timetable:{
+    periods:JSON.parse(JSON.stringify(DB.timetablePeriods)),
+    courses:seedTimetableCourses(),
+    color:'#4A90D9'
   },
   hotState:{
     newsCat:'it',
@@ -3358,6 +3533,14 @@ function loadState(){
       // Ensure notes exists
       if(!merged.notes)merged.notes=[];
       if(!merged.notesCurrentTag)merged.notesCurrentTag='想法';
+      // Ensure timetable structure exists (migration safety)
+      if(!merged.timetable)merged.timetable={periods:JSON.parse(JSON.stringify(DB.timetablePeriods)),courses:seedTimetableCourses(),color:'#4A90D9'};
+      if(!merged.timetable.periods)merged.timetable.periods=JSON.parse(JSON.stringify(DB.timetablePeriods));
+      if(!merged.timetable.courses)merged.timetable.courses=seedTimetableCourses();
+      merged.timetable.courses.forEach(function(c){
+        if(c.period==null)c.period=0;
+        if(c.id==null)c.id=Date.now()+Math.floor(Math.random()*100000);
+      });
       return merged;
     }
   }catch(e){
@@ -3493,7 +3676,7 @@ function renderCurrentPage(){
     case 'home':renderHome();break;
     case 'science':renderScience();break;
     case 'exercise':renderExercise();break;
-    case 'books':renderBooks();break;
+    case 'books':renderTimetable();break;
     case 'words':renderWords();break;
     case 'expression':renderInsight();break;
     case 'starlight':renderStarlight();break;
@@ -3884,129 +4067,248 @@ $('#exerciseList').addEventListener('click',function(e){
 window.addCustomExercise=addCustomExercise;
 window.exerciseGoPage=exerciseGoPage;
 
-/* ========== BOOKS ========== */
-function renderBooks(){
-  const today=todayKey();
-  if(state.bookState.lastDay!==today){
-    state.bookState.currentIdx=dayOfYear()%DB.books.length;
-    state.bookState.lastDay=today;saveState();
+/* ========== TIMETABLE ========== */
+var TT_PALETTE=['#4A90D9','#10B981','#8B5CF6','#F59E0B','#EF4444','#06B6D4','#EC4899','#C9A961','#14B8A6','#94A3B8'];
+var TT_DAYS=['周一','周二','周三','周四','周五','周六','周日'];
+var ttEditingId=null;
+var ttFormInit=false;
+var ttAutoScrolled=false;
+var ttPeriodDraft=null;
+var ttPeriodDraftMap=[];
+
+function ttTodayNo(){var d=new Date().getDay();return d===0?7:d;}
+function ttCourseById(id){return state.timetable.courses.find(function(c){return c.id===id;});}
+function ttPeriodLabel(i){var p=state.timetable.periods[i];return p?escapeHtml(p.label):('第'+(i+1)+'节');}
+function ttMeta(c){
+  return [c.teacher,c.room].filter(Boolean).map(escapeHtml).join(' · ');
+}
+function renderPeriodSelect(sel){
+  var periods=state.timetable.periods;
+  var el=$('#ttPeriod');
+  if(!el)return;
+  var cur=parseInt(el.value,10);
+  if(sel==null)sel=(isNaN(cur)?0:cur);
+  if(sel>=periods.length)sel=periods.length-1;
+  if(sel<0)sel=0;
+  el.innerHTML=periods.map(function(p,i){
+    return '<option value="'+i+'">'+escapeHtml(p.label)+'</option>';
+  }).join('');
+  el.value=String(sel);
+}
+function renderTimetable(){
+  var periods=state.timetable.periods;
+  var courses=state.timetable.courses;
+  var today=ttTodayNo();
+  $('#ttTodayTag').textContent='今日 · '+TT_DAYS[today-1];
+  var todayCourses=courses.filter(function(c){return c.day===today;}).sort(function(a,b){return (a.period||0)-(b.period||0);});
+  $('#ttTitle').textContent=todayCourses.length?('今天有 '+todayCourses.length+' 节课'):'今天没有课，好好休息';
+  $('#ttTodayList').innerHTML=todayCourses.length?todayCourses.map(function(c){
+    var p=periods[c.period||0];
+    return '<div class="tt-today-item" onclick="editCourse('+c.id+')">'+
+      '<span class="tt-today-dot" style="background:'+c.color+'"></span>'+
+      '<div class="tt-today-main"><div class="tt-today-name">'+escapeHtml(c.name)+'</div>'+
+      '<div class="tt-today-meta">'+ttMeta(c)+'</div></div>'+
+      '<span class="tt-today-time">'+escapeHtml(p?p.label:'')+'</span>'+
+    '</div>';
+  }).join(''):'<div class="tt-empty-today">今天没有安排课程，可以自由安排时间。</div>';
+
+  var html='<div class="tt-corner">节次</div>';
+  for(var d=1;d<=7;d++)html+='<div class="tt-head'+(d===today?' today':'')+'">'+TT_DAYS[d-1]+'</div>';
+  periods.forEach(function(p,pi){
+    html+='<div class="tt-period"><b>'+escapeHtml(p.label)+'</b><span>'+escapeHtml(p.time||'')+'</span></div>';
+    for(var d=1;d<=7;d++){
+      var cell=courses.filter(function(c){return c.day===d&&(c.period||0)===pi;});
+      html+='<div class="tt-cell'+(d===today?' today':'')+'" onclick="pickCell('+d+','+pi+')" title="点击添加课程">';
+      if(!cell.length)html+='<span class="tt-empty">+</span>';
+      cell.forEach(function(c){
+        html+='<div class="tt-block'+(c.id===ttEditingId?' editing':'')+'" style="background:'+c.color+'" onclick="event.stopPropagation();editCourse('+c.id+')">'+
+          '<div class="tt-b-name">'+escapeHtml(c.name)+'</div>'+
+          '<div class="tt-b-meta">'+ttMeta(c)+'</div>'+
+        '</div>';
+      });
+      html+='</div>';
+    }
+  });
+  $('#ttGrid').innerHTML=html;
+  var sc=$('#ttGrid').parentElement;
+  if(!ttAutoScrolled&&sc){
+    ttAutoScrolled=true;
+    var cw=104;
+    var target=(today-1)*cw-(sc.clientWidth-cw)/2;
+    if(target>0)sc.scrollLeft=Math.min(target,sc.scrollWidth-sc.clientWidth);
   }
-  const b=DB.books[state.bookState.currentIdx];
-  $('#bfTitle').textContent=b.title;
-  $('#bfAuthor').textContent=b.author+' · ⭐ '+b.rating;
-  $('#bfDesc').textContent=b.desc;
-  $('#bookFeatured').style.background='linear-gradient(135deg, '+b.color+' 0%, '+shadeColor(b.color,-25)+' 100%)';
-  renderBookList();
-  renderBookHistory();
+
+  $('#ttColors').innerHTML=TT_PALETTE.map(function(c){
+    return '<span class="tt-color'+(c===state.timetable.color?' active':'')+'" style="background:'+c+'" onclick="pickTtColor(\''+c+'\')"></span>';
+  }).join('');
+
+  var editing=ttEditingId?ttCourseById(ttEditingId):null;
+  $('#ttFormTitle').textContent=editing?'修改课程':'添加课程';
+  $('#ttSubmit').textContent=editing?'保存修改':'添加课程';
+  $('#ttCancel').style.display=editing?'inline-block':'none';
+  $('#ttDelete').style.display=editing?'inline-block':'none';
+  if(!ttFormInit){$('#ttDay').value=String(today);ttFormInit=true;}
+  renderPeriodSelect(editing?(editing.period||0):null);
 }
-function renderBookCheckin(){
-  const today=todayKey();
-  const checked=!!state.bookState.bookCheckinLog[today];
-  $('#bookCheckinStatus').textContent=checked?'已打卡 ✓':'未打卡';
-  $('#bookCheckinStatus').style.color=checked?'#10B981':'#6B7A99';
+function pickTtColor(color){
+  state.timetable.color=color;
+  renderTimetable();
 }
-function bookCheckin(){
-  const today=todayKey();
-  if(state.bookState.bookCheckinLog[today]){
-    showToast('今天已经打卡了 ✓');
-    return;
+function pickCell(day,period){
+  ttEditingId=null;
+  $('#ttName').value='';$('#ttTeacher').value='';$('#ttRoom').value='';
+  $('#ttDay').value=String(day);
+  renderPeriodSelect(period);
+  renderTimetable();
+  $('#ttName').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(function(){$('#ttName').focus();},280);
+}
+function clearTtForm(){
+  $('#ttName').value='';$('#ttTeacher').value='';$('#ttRoom').value='';
+  $('#ttDay').value=String(ttTodayNo());
+  renderPeriodSelect(0);
+}
+function submitCourse(){
+  var name=$('#ttName').value.trim();
+  if(!name){showToast('请填写课程名称');$('#ttName').focus();return;}
+  var idx=parseInt($('#ttPeriod').value,10);
+  if(isNaN(idx)||idx<0||idx>=state.timetable.periods.length){showToast('请先设置节次');return;}
+  var data={
+    day:parseInt($('#ttDay').value,10)||1,
+    period:idx,
+    name:name,
+    teacher:$('#ttTeacher').value.trim(),
+    room:$('#ttRoom').value.trim(),
+    color:state.timetable.color
+  };
+  if(ttEditingId){
+    var c=ttCourseById(ttEditingId);
+    if(c){Object.assign(c,data);showToast('已保存修改');}
+    ttEditingId=null;
+  }else{
+    data.id=Date.now()+Math.floor(Math.random()*1000);
+    state.timetable.courses.push(data);
+    showToast('已添加课程');
   }
-  state.bookState.bookCheckinLog[today]=true;
-  const b=DB.books[state.bookState.currentIdx];
-  state.bookState.bookHistory.push({date:today,book:b.title,author:b.author,progress:state.bookState.progress[b.id]||0});
-  saveState();
-  renderBookCheckin();
-  renderBookHistory();
-  showToast('阅读打卡成功 📖');
+  saveState();clearTtForm();renderTimetable();
 }
-function renderBookList(){
-  let html='';
-  for(let i=1;i<=6;i++){
-    const b=DB.books[(state.bookState.currentIdx+i)%DB.books.length];
-    const coverGradient='linear-gradient(145deg, '+b.color+' 0%, '+shadeColor(b.color,-30)+' 100%)';
-    const spineColor=shadeColor(b.color,-40);
-    html+='<div class="book-item">'+
-      '<div class="book-cover" style="background:'+coverGradient+';position:relative;overflow:hidden">'+
-        '<div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:'+spineColor+';opacity:0.5"></div>'+
-        '<div style="position:absolute;top:4px;left:7px;right:4px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.85);line-height:1.2;text-align:center;word-break:break-all">'+escapeHtml(b.title)+'</div>'+
-        '<div style="position:absolute;bottom:4px;left:7px;right:4px;font-size:7px;color:rgba(255,255,255,0.6);text-align:center">'+escapeHtml(b.author.split(/[\s\/]/)[0])+'</div>'+
-      '</div>'+
-      '<div class="book-info">'+
-        '<div class="book-title">'+escapeHtml(b.title)+'</div>'+
-        '<div class="book-author">'+escapeHtml(b.author)+'</div>'+
-        '<div class="book-rating">⭐ '+b.rating+'</div>'+
-        '<div class="book-desc">'+escapeHtml(b.desc)+'</div>'+
-        '<div class="book-actions">'+
-          '<button class="mini-btn" data-act="featured" data-id="'+b.id+'">查看详情</button>'+
-        '</div>'+
-      '</div></div>';
+function editCourse(id){
+  var c=ttCourseById(id);
+  if(!c)return;
+  ttEditingId=id;
+  $('#ttName').value=c.name;
+  $('#ttTeacher').value=c.teacher||'';
+  $('#ttRoom').value=c.room||'';
+  $('#ttDay').value=String(c.day);
+  state.timetable.color=c.color;
+  renderTimetable();
+  renderPeriodSelect(c.period||0);
+  $('#ttName').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(function(){$('#ttName').focus();},280);
+}
+function cancelEditCourse(){
+  ttEditingId=null;
+  clearTtForm();
+  renderTimetable();
+}
+function deleteEditingCourse(){
+  if(ttEditingId==null)return;
+  removeCourse(ttEditingId);
+}
+function removeCourse(id){
+  if(!confirm('确定删除这门课程吗？'))return;
+  state.timetable.courses=state.timetable.courses.filter(function(c){return c.id!==id;});
+  if(ttEditingId===id)ttEditingId=null;
+  saveState();renderTimetable();showToast('课程已删除');
+}
+function resetTimetable(){
+  if(!confirm('恢复默认课表？当前自定义的课程与节次将被覆盖。'))return;
+  state.timetable.periods=JSON.parse(JSON.stringify(DB.timetablePeriods));
+  state.timetable.courses=seedTimetableCourses();
+  ttEditingId=null;
+  if($('#ttPeriodEditor').style.display!=='none')openPeriodEditor();
+  saveState();clearTtForm();renderTimetable();showToast('已恢复默认课表');
+}
+
+/* ---- Period editor ---- */
+function togglePeriodEditor(){
+  var el=$('#ttPeriodEditor');
+  var open=el.style.display!=='none';
+  el.style.display=open?'none':'block';
+  $('#ttPeriodToggle').textContent=open?'展开编辑':'收起编辑';
+  if(!open)openPeriodEditor();
+}
+function openPeriodEditor(){
+  ttPeriodDraft=JSON.parse(JSON.stringify(state.timetable.periods));
+  ttPeriodDraftMap=ttPeriodDraft.map(function(_,i){return i;});
+  renderPeriodEditorRows();
+}
+function renderPeriodEditorRows(){
+  $('#ttPeriodRows').innerHTML=ttPeriodDraft.map(function(p,i){
+    return '<div class="tt-pe-row">'+
+      '<input class="tt-input" value="'+escapeHtml(p.label)+'" data-i="'+i+'" data-f="label" placeholder="节次名称，如 第1、2节" maxlength="14">'+
+      '<input class="tt-input tt-time" value="'+escapeHtml(p.time||'')+'" data-i="'+i+'" data-f="time" placeholder="时间，如 08:00-09:40" maxlength="16">'+
+      '<span class="tt-pe-del" onclick="removePeriodRow('+i+')" title="删除该节次">×</span>'+
+    '</div>';
+  }).join('');
+}
+function removePeriodRow(i){
+  if(ttPeriodDraft.length<=1){showToast('至少保留一个节次');return;}
+  ttPeriodDraft.splice(i,1);
+  ttPeriodDraftMap.splice(i,1);
+  renderPeriodEditorRows();
+}
+function addPeriodRow(){
+  ttPeriodDraft.push({label:'第'+(ttPeriodDraft.length+1)+'节',time:''});
+  ttPeriodDraftMap.push(-1);
+  renderPeriodEditorRows();
+  var rows=$('#ttPeriodRows');
+  var last=rows.lastElementChild;
+  if(last){var inp=last.querySelector('input');if(inp)inp.focus();}
+}
+function savePeriods(){
+  var labels=[];
+  for(var i=0;i<ttPeriodDraft.length;i++){
+    var p=ttPeriodDraft[i];
+    p.label=(p.label||'').trim();
+    p.time=(p.time||'').trim();
+    if(!p.label){showToast('第 '+(i+1)+' 个节次还没有名称');return;}
+    if(labels.indexOf(p.label)>=0){showToast('节次名称「'+p.label+'」重复了');return;}
+    labels.push(p.label);
   }
-  $('#bookList').innerHTML=html;
+  var map=ttPeriodDraftMap;
+  var dropped=state.timetable.courses.filter(function(c){return map.indexOf(c.period||0)<0;}).length;
+  if(dropped&&!confirm('有 '+dropped+' 门课程所在节次被删除，保存后这些课程会一并删除，确定吗？'))return;
+  state.timetable.courses=state.timetable.courses.filter(function(c){
+    var ni=map.indexOf(c.period||0);
+    if(ni<0)return false;
+    c.period=ni;
+    return true;
+  });
+  state.timetable.periods=ttPeriodDraft.map(function(p){return {label:p.label,time:p.time};});
+  ttEditingId=null;
+  saveState();renderTimetable();showToast('节次已保存');
 }
-$('#bookList').addEventListener('click',e=>{
-  const b=e.target.closest('button.mini-btn');
-  if(!b)return;
-  const id=parseInt(b.dataset.id,10);
-  if(b.dataset.act==='featured')setFeatured(id);
+document.getElementById('ttPeriodRows').addEventListener('input',function(e){
+  var el=e.target;
+  if(!el||!el.dataset||el.dataset.i==null)return;
+  var i=parseInt(el.dataset.i,10);
+  if(!ttPeriodDraft||!ttPeriodDraft[i])return;
+  ttPeriodDraft[i][el.dataset.f]=el.value;
 });
-function bumpBookProgress(id,delta){
-  const bk=DB.books.find(b=>b.id===id);
-  if(!bk)return;
-  state.bookState.progress[id]=Math.min(100,Math.max(0,(state.bookState.progress[id]||0)+delta));
-  saveState();renderBooks();showToast('进度已更新');
-}
-function bumpProgress(delta){
-  const b=DB.books[state.bookState.currentIdx];
-  bumpBookProgress(b.id,delta);
-}
-function setFeatured(id){
-  const idx=DB.books.findIndex(b=>b.id===id);
-  if(idx>=0){
-    state.bookState.currentIdx=idx;
-    state.bookState.lastDay=todayKey();
-    saveState();renderBooks();
-    $('#mainContent').scrollTop=0;
-    showToast('已切换');
-  }
-}
-function refreshBooks(){
-  state.bookState.currentIdx=Math.floor(Math.random()*DB.books.length);
-  state.bookState.lastDay=todayKey();
-  saveState();renderBooks();showToast('已换一批');
-}
-function renderBookHistory(){
-  const list=state.bookState.bookHistory.slice().reverse();
-  if(!list.length){
-    $('#bookHistory').innerHTML='<div class="empty-state"><div class="icon">📖</div><div class="text">还没有阅读打卡记录</div></div>';
-    $('#bookPager').innerHTML='';
-    return;
-  }
-  const ps=10;
-  const pg=state.bookState.bookPage||1;
-  const total=list.length;
-  const start=(pg-1)*ps;
-  const pageItems=list.slice(start,start+ps);
-  $('#bookHistory').innerHTML=pageItems.map(h=>
-    '<div class="hist-card">'+
-      '<div class="hist-date">'+h.date+'</div>'+
-      '<div class="hist-body">'+
-        '<div class="hist-title">📖 '+escapeHtml(h.book)+'</div>'+
-        '<div class="hist-meta">'+escapeHtml(h.author)+' · 进度 '+h.progress+'%</div>'+
-      '</div>'+
-    '</div>'
-  ).join('');
-  renderPager('bookPager',total,ps,pg,'bookGoPage');
-}
-function bookGoPage(p){
-  const total=state.bookState.bookHistory.length;
-  const totalPages=Math.ceil(total/10)||1;
-  state.bookState.bookPage=Math.max(1,Math.min(p,totalPages));
-  saveState();renderBookHistory();
-}
-window.bumpProgress=bumpProgress;
-window.refreshBooks=refreshBooks;
-window.bookCheckin=bookCheckin;
-window.bookGoPage=bookGoPage;
+
+window.submitCourse=submitCourse;
+window.editCourse=editCourse;
+window.cancelEditCourse=cancelEditCourse;
+window.deleteEditingCourse=deleteEditingCourse;
+window.removeCourse=removeCourse;
+window.resetTimetable=resetTimetable;
+window.pickTtColor=pickTtColor;
+window.pickCell=pickCell;
+window.togglePeriodEditor=togglePeriodEditor;
+window.addPeriodRow=addPeriodRow;
+window.removePeriodRow=removePeriodRow;
+window.savePeriods=savePeriods;
 
 /* ========== WORDS ========== */
 function renderWords(){
@@ -4684,11 +4986,10 @@ async function dailyUpdateAll(){
       state.wordsState.lastDay=''; // force re-rotation
       if(state.currentPage==='words')renderWords();
     }catch(e){console.warn('daily words update failed',e);}
-    // Books: rotate daily recommendation
+    // Timetable: re-render to refresh today's courses
     try{
-      state.bookState.lastDay=''; // force re-rotation
-      if(state.currentPage==='books')renderBooks();
-    }catch(e){console.warn('daily books update failed',e);}
+      if(state.currentPage==='books')renderTimetable();
+    }catch(e){console.warn('daily timetable update failed',e);}
     // Starlight: re-render to refresh quote and check night-time status
     try{
       if(state.currentPage==='starlight')renderStarlight();
@@ -5172,7 +5473,6 @@ async function init(){
     console.log('Cross-day detected: last visit',lastVisit,'today',today);
     // Force re-rotation of daily content on new day
     state.wordsState.lastDay='';
-    state.bookState.lastDay='';
     state.exprState.lastDay='';
     saveState();
   }
@@ -5235,7 +5535,6 @@ async function init(){
         console.log('Tab refocused on a new day, refreshing daily content');
         state._lastVisitDate=now;
         state.wordsState.lastDay='';
-        state.bookState.lastDay='';
         state.exprState.lastDay='';
         saveState();
         if(shouldDailyUpdate())dailyUpdateAll();

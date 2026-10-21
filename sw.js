@@ -1,5 +1,5 @@
 // Service Worker - 赴昕工作台 PWA
-const CACHE_NAME = 'workbench-v2';
+const CACHE_NAME = 'workbench-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -36,10 +36,28 @@ self.addEventListener('activate', function(e) {
   self.clients.claim();
 });
 
-// Fetch - cache-first for assets, network-first for HTML
+// Fetch - network-first for HTML/navigation (so updates land immediately), cache-first for assets
 self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET') return;
-  
+
+  var isHTML = e.request.mode === 'navigate' || (e.request.headers.get('accept') || '').indexOf('text/html') > -1;
+  if (isHTML) {
+    e.respondWith(
+      fetch(e.request).then(function(response) {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) { cache.put(e.request, clone).catch(function() {}); });
+        }
+        return response;
+      }).catch(function() {
+        return caches.match(e.request).then(function(cached) {
+          return cached || caches.match('./index.html');
+        });
+      })
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(function(cached) {
       const networkFetch = fetch(e.request).then(function(response) {
