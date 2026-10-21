@@ -2341,10 +2341,12 @@ body{
 .hot-row:first-child{border-top:none}
 .hot-row:hover{background:rgba(201,169,97,0.05)}
 .hot-rank{
-  flex:0 0 24px;text-align:center;font-size:15px;font-weight:700;
-  color:#5C6470;font-family:Georgia,serif;line-height:1.2;
+  flex:0 0 24px;height:22px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;border-radius:7px;font-family:Georgia,serif;line-height:1;
 }
-.hot-rank.top{color:#C9A961}
+.hot-rank.r1{background:linear-gradient(135deg,#F5D37A,#C9A961);color:#241F33;box-shadow:0 2px 8px rgba(201,169,97,0.35)}
+.hot-rank.r2{background:linear-gradient(135deg,#E8EDF3,#A8B3C5);color:#241F33;box-shadow:0 2px 8px rgba(168,179,197,0.22)}
+.hot-rank.r3{background:linear-gradient(135deg,#E0A97A,#B5743F);color:#241F33;box-shadow:0 2px 8px rgba(181,116,63,0.25)}
 .hot-main{flex:1;min-width:0}
 .hot-title{
   font-size:13px;font-weight:600;color:#E8EDF3;line-height:1.45;
@@ -5348,11 +5350,25 @@ function fetchHotSource(src){
     }).filter(function(it){return it.title&&it.url;});
   }).catch(function(){clearTimeout(timer);return [];});
 }
+function hotHeatValue(it){
+  var s=String(it&&it.heat||'');
+  var m=s.match(/([\d.]+)\s*(亿|万)?/);
+  if(!m)return 0;
+  var v=parseFloat(m[1]);
+  if(!isFinite(v))return 0;
+  if(m[2]==='亿')v*=1e8;
+  else if(m[2]==='万')v*=1e4;
+  return v;
+}
 function paintHot(items,meta){
   var list=$('#hotList');
   if(!list)return;
+  items=items.slice().sort(function(a,b){return hotHeatValue(b)-hotHeatValue(a);});
   list.innerHTML=items.map(function(it,i){
-    var rank='<span class="hot-rank'+(i<3?' top':'')+'">'+(i+1)+'</span>';
+    var rank='';
+    if(i===0)rank='<span class="hot-rank r1">1</span>';
+    else if(i===1)rank='<span class="hot-rank r2">2</span>';
+    else if(i===2)rank='<span class="hot-rank r3">3</span>';
     var heat=it.heat?'<span class="hot-heat">'+escapeHtml(it.heat)+'</span>':'';
     return '<a class="hot-row" href="'+it.url+'" target="_blank" rel="noopener noreferrer">'+rank+
       '<span class="hot-main"><span class="hot-title">'+it.title+'</span>'+
